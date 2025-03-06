@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinitode 2 Bonus System Explained</title>
+    <title>Infinitode 2 Bonus Probability System</title>
+    <!--  Prism.js CSS (Tomorrow Theme) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
     <style>
         :root {
             --primary: #3498db;
@@ -14,14 +17,17 @@
             --text: #444;
             --light: #fff;
             --border: #ddd;
+            --code-bg: #2d2d2d; /* Darker background for code blocks, consistent with Tomorrow theme */
+            --code-text: #ccc; /* Lighter text color for code blocks */
         }
-        
+
+        /* General Styles */
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -30,7 +36,7 @@
             padding: 0;
             margin: 0;
         }
-        
+
         header {
             background-color: var(--primary);
             color: var(--light);
@@ -39,7 +45,7 @@
             position: relative;
             overflow: hidden;
         }
-        
+
         header::before {
             content: "";
             position: absolute;
@@ -50,22 +56,23 @@
             background: linear-gradient(135deg, rgba(52, 152, 219, 0.8) 0%, rgba(41, 128, 185, 0.8) 100%);
             z-index: 1;
         }
-        
-        header h1, header p {
+
+        header h1,
+        header p {
             position: relative;
             z-index: 2;
         }
-        
+
         h1 {
             margin-bottom: 0.5rem;
             font-size: 2.5rem;
         }
-        
+
         header p {
             font-size: 1.2rem;
             opacity: 0.9;
         }
-        
+
         .container {
             max-width: 1100px;
             margin: 0 auto;
@@ -73,413 +80,422 @@
             background-color: var(--light);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        
+
         section {
             margin-bottom: 2rem;
             padding-bottom: 1rem;
             border-bottom: 1px solid var(--border);
         }
-        
+
         section:last-child {
             border-bottom: none;
         }
-        
+
         h2 {
             color: var(--secondary);
             margin-bottom: 1rem;
             padding-bottom: 0.5rem;
             border-bottom: 2px solid var(--primary);
         }
-        
+
         h3 {
             color: var(--dark);
             margin: 1.5rem 0 0.5rem;
         }
-        
-        ul, ol {
+
+        ul,
+        ol {
             margin-left: 2rem;
             margin-bottom: 1rem;
         }
-        
+
         li {
             margin-bottom: 0.5rem;
         }
-        
+
+        /* Code Styles (Inline and Block) */
         code {
-            background-color: #f0f0f0;
-            padding: 0.1rem 0.3rem;
-            border-radius: 3px;
             font-family: Consolas, Monaco, 'Andale Mono', monospace;
-            color: #e67e22;
+            /* Consistent monospace font */
+            background-color: var(--code-bg); /* Set background color */
+            color: var(--code-text); /* Set text color */
+            padding: 0.1em 0.3em; /* Add some padding */
+            border-radius: 3px; /* Rounded corners */
+            border: 1px solid #555; /* Subtle border */
         }
-        
+
+
+        pre {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 1rem;
+            border-radius: 5px;
+            margin: 1rem 0;
+            border-left: 4px solid var(--primary);
+            overflow-x: auto; /*  Horizontal scrolling for long lines */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-width: 100%;
+        }
+
+         /* Prism.js Integration */
+        pre[class*="language-"] {
+              padding: 1em;
+              margin: .5em 0;
+              overflow: auto;
+              border-radius: 0.3em;
+              background: var(--code-bg); /* Consistent background */
+              border: none; /* Remove default Prism border */
+        }
+        pre[class*="language-"]>code[class*="language-"] {
+            display: block;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            color: var(--code-text); /* Apply code text color */
+             /* Remove padding inherited from inline <code> */
+             padding: 0;
+            background: none; /* Remove inline <code> background */
+            border: none;
+        }
+
         .highlight {
             background-color: #fffde7;
             padding: 1rem;
             border-left: 4px solid var(--accent);
             margin: 1rem 0;
         }
-        
-        .bonus-stage {
-            display: flex;
-            margin-bottom: 1rem;
-            align-items: center;
-        }
-        
-        .stage-number {
-            background-color: var(--primary);
-            color: white;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            margin-right: 1rem;
-            flex-shrink: 0;
-        }
-        
-        .progress-bar {
-            height: 20px;
-            background-color: #eee;
-            border-radius: 10px;
-            overflow: hidden;
-            flex-grow: 1;
-            position: relative;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background-color: var(--accent);
-            width: 0;
-            transition: width 1.5s ease-in-out;
-        }
-        
-        .progress-text {
-            position: absolute;
-            top: 0;
-            right: 10px;
-            color: var(--dark);
-            font-size: 0.8rem;
-            line-height: 20px;
-        }
-        
-        .bonus-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 1.5rem 0;
-        }
-        
-        .bonus-card {
-            border: 1px solid var(--border);
-            border-radius: 5px;
-            padding: 1rem;
-            width: calc(50% - 0.5rem);
-            background-color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .bonus-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .bonus-card h4 {
-            color: var(--secondary);
-            margin-bottom: 0.5rem;
-        }
-        
-        .probability-example {
-            margin: 1.5rem 0;
-            padding: 1rem;
-            background-color: #f9f9f9;
-            border-radius: 5px;
-        }
-        
-        .button {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            text-decoration: none;
-            margin: 1rem 0;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        
-        .button:hover {
-            background-color: var(--secondary);
-        }
-        
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 1rem 0;
         }
-        
-        table, th, td {
+
+        table,
+        th,
+        td {
             border: 1px solid var(--border);
         }
-        
-        th, td {
+
+        th,
+        td {
             padding: 0.75rem;
             text-align: left;
         }
-        
+
         th {
             background-color: #f2f2f2;
         }
-        
+
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
-        
+
+        .note {
+            background-color: #e8f4f8;
+            padding: 1rem;
+            border-left: 4px solid var(--primary);
+            margin: 1rem 0;
+        }
+
+        .math {
+            font-family: "Times New Roman", Times, serif;
+        }
+
+        .probability-diagram {
+            width: 100%;
+            height: 50px;
+            background-color: #f0f0f0;
+            margin: 1rem 0;
+            position: relative;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .probability-segment {
+            height: 100%;
+            position: absolute;
+            top: 0;
+        }
+
+        .probability-label {
+            position: absolute;
+            bottom: -25px;
+            font-size: 0.8rem;
+            transform: translateX(-50%);
+        }
+
         @media (max-width: 768px) {
-            .bonus-card {
-                width: 100%;
+            .container {
+                padding: 1rem;
             }
         }
     </style>
+    <!--  Prism.js JS (core and Java language support) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js" defer></script>
 </head>
+
 <body>
     <header>
-        <h1>Infinitode 2 Bonus System</h1>
-        <p>Understanding how bonuses work to maximize your gameplay</p>
+        <h1>Infinitode 2 Bonus Probability System</h1>
+        <p>Understanding how the random bonus selection works</p>
     </header>
-    
     <div class="container">
         <section id="intro">
-            <h2>Introduction to the Bonus System</h2>
-            <p>The Bonus System in Infinitode 2 provides powerful gameplay modifiers as you progress through each level. These bonuses can dramatically change your gameplay strategy and provide significant advantages when used effectively.</p>
-            
+            <h2>Introduction</h2>
+            <p>The bonus selection system in Infinitode 2 is driven by a sophisticated probability mechanism. This
+                document explains how these probabilities are calculated and how the random selection process works.
+            </p>
+        </section>
+        <section id="probability-basics">
+            <h2>The Probability Distribution System</h2>
+            <p>Infinitode 2 uses several specific random distribution classes from the libGDX library utilities:</p>
+            <br>
+            <ul>
+                <li><strong>UniformFloatDistribution</strong>: Generates random float values uniformly distributed
+                    between a minimum and maximum value
+                </li>
+                <li><strong>UniformDoubleDistribution</strong>: Similar to UniformFloatDistribution but for double
+                    precision values
+                </li>
+                <li><strong>TriangularFloatDistribution</strong>: Generates random float values with higher probability
+                    near a "mode" value
+                </li>
+                <li><strong>ConstantFloatDistribution</strong>: Always returns the same value (used for fixed bonuses)
+                </li>
+            </ul>
+            <div class="note">
+                <p>These distribution classes allow the game to create nuanced probability patterns that can be
+                    configured for each type of bonus.
+                </p>
+            </div>
+        </section>
+        <section id="weighted-selection">
+            <h2>Weighted Random Selection</h2>
+            <p>When selecting which bonuses to offer, the game uses a weighted random selection algorithm:</p>
             <div class="highlight">
-                <p>Bonuses are unlocked by killing enemies. Each enemy eliminated (that isn't specially marked) contributes 1 point toward your next bonus stage.</p>
-            </div>
-        </section>
-        
-        <section id="how-it-works">
-            <h2>How the Bonus System Works</h2>
-            
-            <h3>Core Mechanics:</h3>
-            <ul>
-                <li>Each level has a configurable number of bonus stages</li>
-                <li>Every time you reach the required number of enemies killed, you unlock a bonus choice</li>
-                <li>You get to choose one bonus from several options (usually 3, sometimes 4 with special modifiers)</li>
-                <li>Each bonus has different effects and can dramatically change your strategy</li>
-                <li>Some bonuses have preconditions that must be satisfied before they can be selected</li>
-            </ul>
-            
-            <h3>Progression System:</h3>
-            <p>The bonus system tracks your progress through stages. Each stage requires a certain number of enemy kills to unlock:</p>
-            
-            <div id="progression-visual">
-                <!-- Progression bars will be inserted here by JavaScript -->
-            </div>
-            
-            <button class="button" id="reset-progression">Reset Progression</button>
-        </section>
-        
-        <section id="bonus-selection">
-            <h2>Bonus Selection</h2>
-            <p>When you reach a bonus stage, you're presented with several options to choose from. Each option is selected using random probability from a larger pool of possible bonuses.</p>
-            
-            <h3>Example Bonus Selection:</h3>
-            <div class="bonus-options">
-                <div class="bonus-card">
-                    <h4>Tower Damage +25%</h4>
-                    <p>All towers deal 25% more damage</p>
-                </div>
-                <div class="bonus-card">
-                    <h4>Mining Speed x2</h4>
-                    <p>Miners extract resources twice as fast</p>
-                </div>
-                <div class="bonus-card">
-                    <h4>+3000 Coins</h4>
-                    <p>Immediately receive 3000 coins</p>
-                </div>
-            </div>
-            
-            <h3>Re-rolling Bonuses:</h3>
-            <p>If you don't like the available options, the game may allow you to re-roll for different bonuses:</p>
-            <ul>
-                <li>Re-rolls typically cost coins</li>
-                <li>The cost increases with each re-roll</li>
-                <li>There may be limits on total re-rolls per stage or per game</li>
-                <li>Re-rolling uses a seeded random system to ensure fairness</li>
-            </ul>
-        </section>
-        
-        <section id="probability">
-            <h2>How Probability Works</h2>
-            <p>The bonus selection isn't purely random - it uses a weighted probability system that gives some bonuses a higher chance of appearing than others.</p>
-            
-            <div class="probability-example">
-                <h3>Example Probability Distribution:</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Bonus Type</th>
-                            <th>Probability Weight</th>
-                            <th>Actual Chance</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Tower Damage +25%</td>
-                            <td>100</td>
-                            <td>10%</td>
-                        </tr>
-                        <tr>
-                            <td>Mining Speed x2</td>
-                            <td>80</td>
-                            <td>8%</td>
-                        </tr>
-                        <tr>
-                            <td>+3000 Coins</td>
-                            <td>120</td>
-                            <td>12%</td>
-                        </tr>
-                        <tr>
-                            <td>More Bonus Variants Next Time</td>
-                            <td>50</td>
-                            <td>5%</td>
-                        </tr>
-                        <tr>
-                            <td>Other bonuses combined</td>
-                            <td>650</td>
-                            <td>65%</td>
-                        </tr>
-                    </tbody>
-                </table>
-                
-                <p>When the system selects bonuses to show, it:</p>
+                <h3>Algorithm:</h3>
                 <ol>
-                    <li>Adds up the total probability weight of all available bonuses</li>
-                    <li>Generates a random number between 0 and the total weight</li>
-                    <li>Selects the bonus where the random number falls within its probability range</li>
-                    <li>Removes that bonus from the pool and repeats until it has enough options</li>
+                    <li>Calculate the total probability weight across all possible bonuses</li>
+                    <li>Generate a random value between 0 and the total probability weight</li>
+                    <li>Iterate through the available bonuses, tracking cumulative probability</li>
+                    <li>Select the bonus where the random value falls within its probability range</li>
+                    <li>Remove that bonus from the pool and repeat for additional options</li>
                 </ol>
             </div>
-            
-            <h3>Bonus Selection Algorithm:</h3>
-            <p>The code uses a seeded random number generator to ensure the same sequence of bonuses for the same seed. The selection process:</p>
-            <ol>
-                <li>Starts with a random seed based on the game configuration</li>
-                <li>Takes into account previous selections and re-rolls</li>
-                <li>Checks if bonuses' preconditions are satisfied</li>
-                <li>If a selected bonus has unsatisfied preconditions, it may be replaced with another valid bonus</li>
-            </ol>
-        </section>
+            <h3>Example Probability Distribution:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bonus Type</th>
+                        <th>Probability Weight</th>
+                        <th>Proportion of Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tower Damage +25%</td>
+                        <td>100</td>
+                        <td>10%</td>
+                    </tr>
+                    <tr>
+                        <td>Mining Speed x2</td>
+                        <td>80</td>
+                        <td>8%</td>
+                    </tr>
+                    <tr>
+                        <td>+3000 Coins</td>
+                        <td>120</td>
+                        <td>12%</td>
+                    </tr>
+                    <tr>
+                        <td>More Bonus Variants</td>
+                        <td>50</td>
+                        <td>5%</td>
+                    </tr>
+                    <tr>
+                        <td>Other bonuses combined</td>
+                        <td>650</td>
+                        <td>65%</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td><strong>1000</strong></td>
+                        <td><strong>100%</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <h3>Code Implementation:</h3>
+            <pre><code class="language-java">// Pseudocode representation of bonus selection algorithm
+private Array<GameplayMod> generateBonusesToChoose(int stageNumber, int bonusesCount, Array<ProbableBonus> probableBonuses) {
+    Array<ProbableBonus> availableProbableBonuses = new Array<>(probableBonuses);
+    RandomXS128 stageRandom = getPreparedRandom(stageNumber);
+    DelayedRemovalArray<GameplayMod> bonusesToChoose = new DelayedRemovalArray<>();
+    
+    // Calculate total probability weight
+    long totalProbability = 0;
+    for (int i = 0; i < availableProbableBonuses.size; i++) {
+        totalProbability += availableProbableBonuses.get(i).getProbability();
+    }
+    
+    // Select bonuses based on weighted probability
+    for (int bonusIndex = 0; bonusIndex < bonusesCount && availableProbableBonuses.size != 0; bonusIndex++) {
+        long randomValue = stageRandom.nextLong(totalProbability);
+        long currentProbabilitySum = 0;
         
-        <section id="special-cases">
-            <h2>Special Cases & Advanced Features</h2>
+        for (int probableBonusIndex = 0; probableBonusIndex < availableProbableBonuses.size; probableBonusIndex++) {
+            ProbableBonus probableBonus = availableProbableBonuses.get(probableBonusIndex);
+            currentProbabilitySum += probableBonus.getProbability();
             
-            <h3>"More Bonus Variants Next Time"</h3>
-            <p>This special bonus increases the number of bonus options you can choose from in future bonus stages from 3 to 4, giving you more strategic flexibility.</p>
-            
-            <h3>Precondition Checking</h3>
-            <p>Some bonuses have requirements that must be met before they can be selected:</p>
+            if (currentProbabilitySum >= randomValue) {
+                GameplayMod bonusToAdd = probableBonus.getBonus().cpy();
+                bonusToAdd.configure(this.S);
+                bonusesToChoose.add(bonusToAdd);
+                
+                // Remove selected bonus from available pool
+                availableProbableBonuses.removeIndex(probableBonusIndex);
+                totalProbability -= probableBonus.getProbability();
+                break;
+            }
+        }
+    }
+    
+    return bonusesToChoose;
+}</code></pre>
+        </section>
+        <section id="probability-modifiers">
+            <h2>Probability Modifiers</h2>
+            <p>The base probability of each bonus can be modified by several factors:</p>
+            <h3>Stage-Based Scaling</h3>
+            <p>The <code class="language-java">BonusProviderConfig</code> class contains parameters that adjust bonus
+                probabilities based on
+                the current stage:
+            </p>
             <ul>
-                <li>Tower-specific bonuses require that type of tower to be built</li>
-                <li>Upgrade bonuses require towers that can be upgraded</li>
-                <li>Mining bonuses require active miners</li>
+                <li><code class="language-java">probability</code>: Base probability weight (default: 1.0)</li>
+                <li><code class="language-java">powerUpProbabilityMultiplier</code>: Adjusts probability specifically
+                    for power-up type
+                    bonuses
+                </li>
+                <li><code class="language-java">minStage</code>: Minimum stage for the bonus to appear</li>
+                <li><code class="language-java">maxStage</code>: Maximum stage for the bonus to appear</li>
+                <li><code class="language-java">probabilityMultiplierPerStage</code>: How much the probability increases
+                    with each new stage
+                </li>
             </ul>
-            
-            <h3>Fallback Mechanism</h3>
-            <p>If all available bonuses have unsatisfied preconditions, the system will add a fallback "Green Papers" bonus to ensure you always have at least one valid option.</p>
+            <div class="highlight">
+                <h3>Example Calculation:</h3>
+                <p>If a bonus has:</p>
+                <ul>
+                    <li>Base probability: 100</li>
+                    <li>probabilityMultiplierPerStage: 0.2</li>
+                    <li>Current stage: 4</li>
+                </ul>
+                <p>The actual probability would be: <span class="math">100 × (1 + 0.2 × (4-1)) = 100 × 1.6 = 160</span>
+                </p>
+            </div>
+        </section>
+        <section id="random-seed">
+            <h2>Random Seed and Determinism</h2>
+            <p>The bonus system uses a seeded random number generator to ensure consistency:
+            </p>
+            <ul>
+                <li>The random seed is stored in <code class="language-java">BonusStagesConfig.seed</code></li>
+                <li>The <code class="language-java">RandomXS128</code> class is used as the random number generator
+                </li>
+                <li>Each stage advances the random state in a deterministic way</li>
+                <li>Re-rolls modify the random state, tracked by <code class="language-java">stageReRolls</code></li>
+            </ul>
+            <pre><code class="language-java">public final RandomXS128 getPreparedRandom(int stageNumber) {
+    this.random.setSeed((long)this.bonusStagesConfig.seed);
+    
+    // Advance random state for each stage
+    for(int stageIndex = 0; stageIndex < stageNumber; ++stageIndex) {
+        this.random.nextLong();
+    }
+    
+    // Apply re-roll influence
+    this.updateRandomState();
+
+
+    return this.random;
+}</code></pre>
+        </section>
+        <section id="filters-preconditions">
+            <h2>Probability Filters and Preconditions</h2>
+            <p>The final probability distribution is filtered by several conditions:</p>
+            <h3>Precondition Checking</h3>
+            <p>Before a bonus can be selected, its preconditions are verified. If they aren't met, the bonus may be
+                replaced with another valid option:
+            </p>
+            <pre><code class="language-java">// Replacing bonuses with unsatisfied preconditions
+if (this.getStagesConfig().replaceBonusesWithNotSatisfiedPreconditions) {
+    for(int bonusToRemoveIndex = 0; bonusToRemoveIndex < bonusesToChoose.size; ++bonusToRemoveIndex) {
+        GameplayMod bonusVariant = bonusesToChoose.get(bonusToRemoveIndex);
+        if (bonusVariant.getNotSatisfiedPreconditions(this.S) != null) {
+            // Try to find a replacement bonus that satisfies preconditions
+            while(availableProbableBonuses.size != 0) {
+                long randomValue = stageRandom.nextLong(totalProbability);
+                long currentProbabilitySum = 0;
+                
+                for(int probableBonusIndex = 0; probableBonusIndex < availableProbableBonuses.size; ++probableBonusIndex) {
+                    ProbableBonus probableBonus = availableProbableBonuses.get(probableBonusIndex);
+                    currentProbabilitySum += probableBonus.getProbability();
+                    
+                    if (currentProbabilitySum >= randomValue) {
+                        GameplayMod replacementBonus = probableBonus.getBonus();
+                        if (replacementBonus.getNotSatisfiedPreconditions(this.S) == null) {
+                            // Found a valid replacement
+                            bonusesToChoose.set(bonusToRemoveIndex, replacementBonus);
+                            replaced = true;
+                            break;
+                        }
+                    }
+                }
+                if (replaced) break;
+            }
+        }
+    }
+}</code></pre>
+            <h3>Category Probability Modifiers</h3>
+            <p>The game has special multipliers for certain categories of bonuses:</p>
+            <ul>
+                <li><code class="language-java">immediateBonusesChance</code>: Affects bonuses that provide immediate
+                    benefits
+                </li>
+                <li><code class="language-java">persistentBonusesChance</code>: Affects bonuses that provide ongoing
+                    effects
+                </li>
+                <li><code class="language-java">activeBonusesSlotLimit</code>: Limits the number of active bonuses
+                    allowed
+                </li>
+            </ul>
+        </section>
+        <section id="triangular-distributions">
+            <h2>Triangular Probability Distributions</h2>
+            <p>The game uses triangular distributions for some randomization effects, which concentrate probability
+                around a specific "mode" value:
+            </p>
+            <div class="highlight">
+                <h3>Triangular Distribution Properties:</h3>
+                <ul>
+                    <li><strong>Low</strong>: The minimum possible value</li>
+                    <li><strong>High</strong>: The maximum possible value</li>
+                    <li><strong>Mode</strong>: The most likely value (peak probability)</li>
+                </ul>
+            </div>
+            <p>The PMath utility class provides helper methods for triangular distributions:</p>
+            <pre><code class="language-java">// Triangular distribution implementations
+randomTriangular(random)
+randomTriangularMax(max, random)
+randomTriangularMinMax(min, max, random)
+randomTriangularMinMaxMode(min, max, mode, random)</code></pre>
+            <p>This creates more nuanced random effects than simple uniform distributions, allowing for "favored values"
+                within a range.
+            </p>
         </section>
     </div>
-    
-    <script>
-        // Progression visualization
-        const stageRequirements = [15, 30, 50, 75, 110, 150, 200, 260, 330, 410];
-        const progressionContainer = document.getElementById('progression-visual');
-        let currentPoints = 0;
-        let activeStage = 0;
-        
-        // Create stage progress bars
-        function createProgressBars() {
-            progressionContainer.innerHTML = '';
-            for (let i = 0; i < stageRequirements.length; i++) {
-                const stageDiv = document.createElement('div');
-                stageDiv.className = 'bonus-stage';
-                
-                const stageNumber = document.createElement('div');
-                stageNumber.className = 'stage-number';
-                stageNumber.textContent = i + 1;
-                
-                const progressBar = document.createElement('div');
-                progressBar.className = 'progress-bar';
-                
-                const progressFill = document.createElement('div');
-                progressFill.className = 'progress-fill';
-                progressFill.id = `progress-${i+1}`;
-                if (i < activeStage) {
-                    progressFill.style.width = '100%';
-                } else if (i === activeStage) {
-                    const percentage = (currentPoints / stageRequirements[i]) * 100;
-                    progressFill.style.width = `${percentage}%`;
-                } else {
-                    progressFill.style.width = '0%';
-                }
-                
-                const progressText = document.createElement('div');
-                progressText.className = 'progress-text';
-                progressText.textContent = i < activeStage ? 
-                    `${stageRequirements[i]}/${stageRequirements[i]} (Complete)` : 
-                    i === activeStage ? 
-                    `${currentPoints}/${stageRequirements[i]}` : 
-                    `0/${stageRequirements[i]}`;
-                
-                progressBar.appendChild(progressFill);
-                progressBar.appendChild(progressText);
-                
-                stageDiv.appendChild(stageNumber);
-                stageDiv.appendChild(progressBar);
-                
-                progressionContainer.appendChild(stageDiv);
-            }
-        }
-        
-        // Simulate enemy kills and progress
-        function simulateKills(count = 1) {
-            if (activeStage >= stageRequirements.length) return;
-            
-            currentPoints += count;
-            
-            // Check if we've completed the current stage
-            if (currentPoints >= stageRequirements[activeStage]) {
-                currentPoints = 0;
-                activeStage++;
-            }
-            
-            createProgressBars();
-        }
-        
-        // Add click listeners to progress bars to simulate kills
-        progressionContainer.addEventListener('click', function() {
-            simulateKills(5);
-        });
-        
-        document.getElementById('reset-progression').addEventListener('click', function() {
-            currentPoints = 0;
-            activeStage = 0;
-            createProgressBars();
-        });
-        
-        // Initialize
-        createProgressBars();
-        
-        // Add animation to simulate progress
-        setInterval(function() {
-            if (Math.random() > 0.7) { // 30% chance to simulate kills each interval
-                simulateKills(Math.floor(Math.random() * 3) + 1);
-            }
-        }, 2000);
-    </script>
 </body>
+
 </html>
