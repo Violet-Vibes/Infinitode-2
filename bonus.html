@@ -417,6 +417,11 @@ private Array<GameplayMod> generateBonusesToChoose(int stageNumber, int bonusesC
     
     // Apply re-roll influence
     this.updateRandomState();
+    for(int stageIndex = 0; stageIndex < this.stageReRolls.size; ++stageIndex) {
+        if (this.stageReRolls.get(stageIndex) == stageNumber) {
+            this.updateRandomState();
+        }
+    }
 
 
     return this.random;
