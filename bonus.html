@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinitode 2 Bonus System</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --text-color: #333;
+            --bg-color: #f9f9f9;
+            --card-color: #fff;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            border-radius: 5px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        section {
+            background-color: var(--card-color);
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: var(--secondary-color);
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 0.5rem;
+        }
+        
+        .example-box {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--accent-color);
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: monospace;
+            overflow-x: auto;
+        }
+        
+        .highlight {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .formula {
+            background-color: #eee;
+            padding: 0.5rem;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        
+        .bonus-sequence {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .bonus-stage {
+            border: 1px solid #ddd;
+            padding: 1rem;
+            border-radius: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .bonus-options {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .bonus-option {
+            background-color: #e9f7fe;
+            border: 1px solid #bde0fe;
+            padding: 0.5rem;
+            border-radius: 3px;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .bonus-selected {
+            background-color: #d1fadf;
+            border-color: #9ed9b5;
+            position: relative;
+        }
+        
+        .bonus-selected::after {
+            content: "✓";
+            position: absolute;
+            top: 0.25rem;
+            right: 0.25rem;
+            color: green;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            header {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Infinitode 2 Bonus System</h1>
+        <p>Understanding how bonus selection works</p>
+    </header>
+    
+    <div class="container">
+        <section>
+            <h2>How the Bonus System Works</h2>
+            <p>In Infinitode 2, the bonus system provides gameplay modifications as rewards when players reach certain progress milestones:</p>
+            <ul>
+                <li><strong>Progress Points:</strong> Earned primarily by killing enemies (typically 1 point per enemy).</li>
+                <li><strong>Bonus Stages:</strong> Each stage has a point requirement; when met, players can select a bonus.</li>
+                <li><strong>Selection:</strong> Players choose from 3-4 randomly generated bonuses.</li>
+                <li><strong>Activation:</strong> The selected bonus affects gameplay immediately.</li>
+            </ul>
+        </section>
+        
+        <section>
+            <h2>Probability Mechanics</h2>
+            <p>The bonus selection system uses weighted probability to determine which bonuses appear:</p>
+            <ol>
+                <li>Each potential bonus has a probability value (weight).</li>
+                <li>The game calculates the total probability sum.</li>
+                <li>A random value between 0 and the total is generated.</li>
+                <li>The game iterates through bonuses, adding up probabilities until reaching the random value.</li>
+                <li>The bonus at this point is selected as one of the options.</li>
+            </ol>
+            
+            <div class="example-box">
+                <p><span class="highlight">Example:</span> If we have bonuses with probabilities:</p>
+                <ul>
+                    <li>TowersDamage: 100</li>
+                    <li>ReceiveCoins: 50</li>
+                    <li>DoubleMiningSpeed: 30</li>
+                    <li>AddRandomPlatform: 20</li>
+                </ul>
+                <p>Total probability: 200</p>
+                <p>Random value: 125</p>
+                <p>Calculation: 100 (TowersDamage) + 50 (ReceiveCoins) = 150 > 125</p>
+                <p>Result: ReceiveCoins is selected</p>
+            </div>
+        </section>
+        
+        <section>
+            <h2>Seed-Based Randomization</h2>
+            <p>The randomization is deterministic, based on several factors:</p>
+            <ul>
+                <li>A configured seed value (from level seed, daily quest, or random value)</li>
+                <li>The stage number</li>
+                <li>Previously selected bonuses (if selectedBonusAffectsRandom=true)</li>
+                <li>Previous re-rolls (if chainReRoll=true)</li>
+            </ul>
+            
+            <p>The formula for random seed preparation is approximately:</p>
+            <div class="formula">
+                random.setSeed(configSeed);
+                // Advance random for each stage
+                for (i = 0; i < stageNumber; i++) random.nextLong();
+                
+                // Account for previous selections
+                if (selectedBonusAffectsRandom) {
+                    for each previously selected bonus {
+                        advance random state based on selection index
+                    }
+                }
+                
+                // Account for re-rolls
+                if (chainReRoll) {
+                    advance random for each previous re-roll
+                }
+            </div>
+        </section>
+        
+        <section>
+            <h2>Bonus Stage Sequence Example</h2>
+            <p>Here's how bonuses might be determined for stages 1-5:</p>
+            
+            <div class="bonus-sequence">
+                <div class="bonus-stage">
+                    <strong>Stage 1 (50 pts)</strong>
+                    <div class="bonus-options">
+                        <div class="bonus-option bonus-selected">TowersDamage</div>
+                        <div class="bonus-option">ReceiveCoins</div>
+                        <div class="bonus-option">AddRandomPlatform</div>
+                    </div>
+                </div>
+                
+                <div class="bonus-stage">
+                    <strong>Stage 2 (100 pts)</strong>
+                    <div class="bonus-options">
+                        <div class="bonus-option">SummonLootBoss</div>
+                        <div class="bonus-option">TowersAttackSpeed</div>
+                        <div class="bonus-option bonus-selected">DoubleMiningSpeed</div>
+                    </div>
+                </div>
+                
+                <div class="bonus-stage">
+                    <strong>Stage 3 (150 pts) - Re-rolled!</strong>
+                    <div class="bonus-options">
+                        <div class="bonus-option">MineLegendaryItems</div>
+                        <div class="bonus-option">CriticalDamage</div>
+                        <div class="bonus-option">BoostExistingEnemiesWithLoot</div>
+                    </div>
+                    <strong>↓</strong>
+                    <div class="bonus-options">
+                        <div class="bonus-option bonus-selected">MoreBonusVariantsNextTime</div>
+                        <div class="bonus-option">FirstEnemiesInWaveExplode</div>
+                        <div class="bonus-option">GV_AbilitiesEnergy</div>
+                    </div>
+                </div>
+                
+                <div class="bonus-stage">
+                    <strong>Stage 4 (200 pts)</strong>
+                    <div class="bonus-options">
+                        <div class="bonus-option">MinersSpawnEnemies</div>
+                        <div class="bonus-option bonus-selected">TriggerRandomAbility</div>
+                        <div class="bonus-option">BaseExplodesOnEnemyPass</div>
+                        <div class="bonus-option">AddAllAbilityCharges</div>
+                    </div>
+                </div>
+                
+                <div class="bonus-stage">
+                    <strong>Stage 5 (250 pts)</strong>
+                    <div class="bonus-options">
+                        <div class="bonus-option">NukeOnBonusStage</div>
+                        <div class="bonus-option bonus-selected">LowHpEnemiesDealNoDamage</div>
+                        <div class="bonus-option">IncreaseSelectedBonusesPower</div>
+                        <div class="bonus-option">MultiplyMdps</div>
+                    </div>
+                </div>
+            </div>
+            
+            <p>Notice how the player's choices and re-rolls affect subsequent stages. At Stage 3, the player re-rolled and selected "MoreBonusVariantsNextTime", which is why Stage 4 has 4 bonus options instead of 3.</p>
+        </section>
+        
+        <section>
+            <h2>Key Factors in Probability Distribution</h2>
+            <ul>
+                <li><strong>Provider Configurations:</strong> Each bonus type has a provider that determines its base probability.</li>
+                <li><strong>Stage-Based Adjustments:</strong> Some bonuses may have different probabilities based on stage number.</li>
+                <li><strong>Re-roll Mechanism:</strong> Players can re-roll available bonuses at a cost, affecting the random sequence.</li>
+                <li><strong>PowerUpProbabilityMultiplier:</strong> Some bonuses have multipliers that adjust their relative probability.</li>
+                <li><strong>Preconditions:</strong> If a selected bonus has unsatisfied preconditions, it may be replaced with another valid bonus.</li>
+            </ul>
+        </section>
+    </div>
+</body>
+</html>
