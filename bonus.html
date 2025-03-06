@@ -3,136 +3,244 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infinitode 2 Bonus System</title>
+    <title>Infinitode 2 Bonus System Explained</title>
     <style>
         :root {
-            --primary-color: #2c3e50;
-            --secondary-color: #3498db;
-            --accent-color: #e74c3c;
-            --text-color: #333;
-            --bg-color: #f9f9f9;
-            --card-color: #fff;
+            --primary: #3498db;
+            --secondary: #2980b9;
+            --accent: #e67e22;
+            --background: #f5f5f5;
+            --dark: #333;
+            --text: #444;
+            --light: #fff;
+            --border: #ddd;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--bg-color);
-            margin: 0;
+            color: var(--text);
+            background-color: var(--background);
             padding: 0;
-        }
-        
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 2rem;
+            margin: 0;
         }
         
         header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 2rem;
+            background-color: var(--primary);
+            color: var(--light);
             text-align: center;
-            margin-bottom: 2rem;
-            border-radius: 5px;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.8) 0%, rgba(41, 128, 185, 0.8) 100%);
+            z-index: 1;
+        }
+        
+        header h1, header p {
+            position: relative;
+            z-index: 2;
         }
         
         h1 {
-            margin: 0;
+            margin-bottom: 0.5rem;
             font-size: 2.5rem;
         }
         
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: var(--light);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
         section {
-            background-color: var(--card-color);
-            border-radius: 5px;
-            padding: 1.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        section:last-child {
+            border-bottom: none;
         }
         
         h2 {
-            color: var(--secondary-color);
-            border-bottom: 2px solid var(--secondary-color);
+            color: var(--secondary);
+            margin-bottom: 1rem;
             padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
         }
         
-        .example-box {
-            background-color: #f8f9fa;
-            border-left: 4px solid var(--accent-color);
-            padding: 1rem;
-            margin: 1rem 0;
-            font-family: monospace;
-            overflow-x: auto;
+        h3 {
+            color: var(--dark);
+            margin: 1.5rem 0 0.5rem;
+        }
+        
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+        }
+        
+        li {
+            margin-bottom: 0.5rem;
+        }
+        
+        code {
+            background-color: #f0f0f0;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-family: Consolas, Monaco, 'Andale Mono', monospace;
+            color: #e67e22;
         }
         
         .highlight {
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-        
-        .formula {
-            background-color: #eee;
-            padding: 0.5rem;
-            border-radius: 3px;
-            font-family: monospace;
-        }
-        
-        .bonus-sequence {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 1rem;
+            background-color: #fffde7;
+            padding: 1rem;
+            border-left: 4px solid var(--accent);
+            margin: 1rem 0;
         }
         
         .bonus-stage {
-            border: 1px solid #ddd;
-            padding: 1rem;
-            border-radius: 5px;
             display: flex;
-            flex-direction: column;
+            margin-bottom: 1rem;
+            align-items: center;
+        }
+        
+        .stage-number {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background-color: #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            flex-grow: 1;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--accent);
+            width: 0;
+            transition: width 1.5s ease-in-out;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            color: var(--dark);
+            font-size: 0.8rem;
+            line-height: 20px;
         }
         
         .bonus-options {
             display: flex;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin: 1.5rem 0;
         }
         
-        .bonus-option {
-            background-color: #e9f7fe;
-            border: 1px solid #bde0fe;
-            padding: 0.5rem;
-            border-radius: 3px;
-            flex: 1;
-            text-align: center;
+        .bonus-card {
+            border: 1px solid var(--border);
+            border-radius: 5px;
+            padding: 1rem;
+            width: calc(50% - 0.5rem);
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
         
-        .bonus-selected {
-            background-color: #d1fadf;
-            border-color: #9ed9b5;
-            position: relative;
+        .bonus-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
-        .bonus-selected::after {
-            content: "✓";
-            position: absolute;
-            top: 0.25rem;
-            right: 0.25rem;
-            color: green;
+        .bonus-card h4 {
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
         }
         
-        @media (max-width: 600px) {
-            .container {
-                padding: 1rem;
-            }
-            
-            header {
-                padding: 1.5rem;
-            }
-            
-            h1 {
-                font-size: 2rem;
+        .probability-example {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .button:hover {
+            background-color: var(--secondary);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        table, th, td {
+            border: 1px solid var(--border);
+        }
+        
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        @media (max-width: 768px) {
+            .bonus-card {
+                width: 100%;
             }
         }
     </style>
@@ -140,149 +248,238 @@
 <body>
     <header>
         <h1>Infinitode 2 Bonus System</h1>
-        <p>Understanding how bonus selection works</p>
+        <p>Understanding how bonuses work to maximize your gameplay</p>
     </header>
     
     <div class="container">
-        <section>
+        <section id="intro">
+            <h2>Introduction to the Bonus System</h2>
+            <p>The Bonus System in Infinitode 2 provides powerful gameplay modifiers as you progress through each level. These bonuses can dramatically change your gameplay strategy and provide significant advantages when used effectively.</p>
+            
+            <div class="highlight">
+                <p>Bonuses are unlocked by killing enemies. Each enemy eliminated (that isn't specially marked) contributes 1 point toward your next bonus stage.</p>
+            </div>
+        </section>
+        
+        <section id="how-it-works">
             <h2>How the Bonus System Works</h2>
-            <p>In Infinitode 2, the bonus system provides gameplay modifications as rewards when players reach certain progress milestones:</p>
+            
+            <h3>Core Mechanics:</h3>
             <ul>
-                <li><strong>Progress Points:</strong> Earned primarily by killing enemies (typically 1 point per enemy).</li>
-                <li><strong>Bonus Stages:</strong> Each stage has a point requirement; when met, players can select a bonus.</li>
-                <li><strong>Selection:</strong> Players choose from 3-4 randomly generated bonuses.</li>
-                <li><strong>Activation:</strong> The selected bonus affects gameplay immediately.</li>
+                <li>Each level has a configurable number of bonus stages</li>
+                <li>Every time you reach the required number of enemies killed, you unlock a bonus choice</li>
+                <li>You get to choose one bonus from several options (usually 3, sometimes 4 with special modifiers)</li>
+                <li>Each bonus has different effects and can dramatically change your strategy</li>
+                <li>Some bonuses have preconditions that must be satisfied before they can be selected</li>
+            </ul>
+            
+            <h3>Progression System:</h3>
+            <p>The bonus system tracks your progress through stages. Each stage requires a certain number of enemy kills to unlock:</p>
+            
+            <div id="progression-visual">
+                <!-- Progression bars will be inserted here by JavaScript -->
+            </div>
+            
+            <button class="button" id="reset-progression">Reset Progression</button>
+        </section>
+        
+        <section id="bonus-selection">
+            <h2>Bonus Selection</h2>
+            <p>When you reach a bonus stage, you're presented with several options to choose from. Each option is selected using random probability from a larger pool of possible bonuses.</p>
+            
+            <h3>Example Bonus Selection:</h3>
+            <div class="bonus-options">
+                <div class="bonus-card">
+                    <h4>Tower Damage +25%</h4>
+                    <p>All towers deal 25% more damage</p>
+                </div>
+                <div class="bonus-card">
+                    <h4>Mining Speed x2</h4>
+                    <p>Miners extract resources twice as fast</p>
+                </div>
+                <div class="bonus-card">
+                    <h4>+3000 Coins</h4>
+                    <p>Immediately receive 3000 coins</p>
+                </div>
+            </div>
+            
+            <h3>Re-rolling Bonuses:</h3>
+            <p>If you don't like the available options, the game may allow you to re-roll for different bonuses:</p>
+            <ul>
+                <li>Re-rolls typically cost coins</li>
+                <li>The cost increases with each re-roll</li>
+                <li>There may be limits on total re-rolls per stage or per game</li>
+                <li>Re-rolling uses a seeded random system to ensure fairness</li>
             </ul>
         </section>
         
-        <section>
-            <h2>Probability Mechanics</h2>
-            <p>The bonus selection system uses weighted probability to determine which bonuses appear:</p>
+        <section id="probability">
+            <h2>How Probability Works</h2>
+            <p>The bonus selection isn't purely random - it uses a weighted probability system that gives some bonuses a higher chance of appearing than others.</p>
+            
+            <div class="probability-example">
+                <h3>Example Probability Distribution:</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Bonus Type</th>
+                            <th>Probability Weight</th>
+                            <th>Actual Chance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Tower Damage +25%</td>
+                            <td>100</td>
+                            <td>10%</td>
+                        </tr>
+                        <tr>
+                            <td>Mining Speed x2</td>
+                            <td>80</td>
+                            <td>8%</td>
+                        </tr>
+                        <tr>
+                            <td>+3000 Coins</td>
+                            <td>120</td>
+                            <td>12%</td>
+                        </tr>
+                        <tr>
+                            <td>More Bonus Variants Next Time</td>
+                            <td>50</td>
+                            <td>5%</td>
+                        </tr>
+                        <tr>
+                            <td>Other bonuses combined</td>
+                            <td>650</td>
+                            <td>65%</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <p>When the system selects bonuses to show, it:</p>
+                <ol>
+                    <li>Adds up the total probability weight of all available bonuses</li>
+                    <li>Generates a random number between 0 and the total weight</li>
+                    <li>Selects the bonus where the random number falls within its probability range</li>
+                    <li>Removes that bonus from the pool and repeats until it has enough options</li>
+                </ol>
+            </div>
+            
+            <h3>Bonus Selection Algorithm:</h3>
+            <p>The code uses a seeded random number generator to ensure the same sequence of bonuses for the same seed. The selection process:</p>
             <ol>
-                <li>Each potential bonus has a probability value (weight).</li>
-                <li>The game calculates the total probability sum.</li>
-                <li>A random value between 0 and the total is generated.</li>
-                <li>The game iterates through bonuses, adding up probabilities until reaching the random value.</li>
-                <li>The bonus at this point is selected as one of the options.</li>
+                <li>Starts with a random seed based on the game configuration</li>
+                <li>Takes into account previous selections and re-rolls</li>
+                <li>Checks if bonuses' preconditions are satisfied</li>
+                <li>If a selected bonus has unsatisfied preconditions, it may be replaced with another valid bonus</li>
             </ol>
-            
-            <div class="example-box">
-                <p><span class="highlight">Example:</span> If we have bonuses with probabilities:</p>
-                <ul>
-                    <li>TowersDamage: 100</li>
-                    <li>ReceiveCoins: 50</li>
-                    <li>DoubleMiningSpeed: 30</li>
-                    <li>AddRandomPlatform: 20</li>
-                </ul>
-                <p>Total probability: 200</p>
-                <p>Random value: 125</p>
-                <p>Calculation: 100 (TowersDamage) + 50 (ReceiveCoins) = 150 > 125</p>
-                <p>Result: ReceiveCoins is selected</p>
-            </div>
         </section>
         
-        <section>
-            <h2>Seed-Based Randomization</h2>
-            <p>The randomization is deterministic, based on several factors:</p>
+        <section id="special-cases">
+            <h2>Special Cases & Advanced Features</h2>
+            
+            <h3>"More Bonus Variants Next Time"</h3>
+            <p>This special bonus increases the number of bonus options you can choose from in future bonus stages from 3 to 4, giving you more strategic flexibility.</p>
+            
+            <h3>Precondition Checking</h3>
+            <p>Some bonuses have requirements that must be met before they can be selected:</p>
             <ul>
-                <li>A configured seed value (from level seed, daily quest, or random value)</li>
-                <li>The stage number</li>
-                <li>Previously selected bonuses (if selectedBonusAffectsRandom=true)</li>
-                <li>Previous re-rolls (if chainReRoll=true)</li>
+                <li>Tower-specific bonuses require that type of tower to be built</li>
+                <li>Upgrade bonuses require towers that can be upgraded</li>
+                <li>Mining bonuses require active miners</li>
             </ul>
             
-            <p>The formula for random seed preparation is approximately:</p>
-            <div class="formula">
-                random.setSeed(configSeed);
-                // Advance random for each stage
-                for (i = 0; i < stageNumber; i++) random.nextLong();
-                
-                // Account for previous selections
-                if (selectedBonusAffectsRandom) {
-                    for each previously selected bonus {
-                        advance random state based on selection index
-                    }
-                }
-                
-                // Account for re-rolls
-                if (chainReRoll) {
-                    advance random for each previous re-roll
-                }
-            </div>
-        </section>
-        
-        <section>
-            <h2>Bonus Stage Sequence Example</h2>
-            <p>Here's how bonuses might be determined for stages 1-5:</p>
-            
-            <div class="bonus-sequence">
-                <div class="bonus-stage">
-                    <strong>Stage 1 (50 pts)</strong>
-                    <div class="bonus-options">
-                        <div class="bonus-option bonus-selected">TowersDamage</div>
-                        <div class="bonus-option">ReceiveCoins</div>
-                        <div class="bonus-option">AddRandomPlatform</div>
-                    </div>
-                </div>
-                
-                <div class="bonus-stage">
-                    <strong>Stage 2 (100 pts)</strong>
-                    <div class="bonus-options">
-                        <div class="bonus-option">SummonLootBoss</div>
-                        <div class="bonus-option">TowersAttackSpeed</div>
-                        <div class="bonus-option bonus-selected">DoubleMiningSpeed</div>
-                    </div>
-                </div>
-                
-                <div class="bonus-stage">
-                    <strong>Stage 3 (150 pts) - Re-rolled!</strong>
-                    <div class="bonus-options">
-                        <div class="bonus-option">MineLegendaryItems</div>
-                        <div class="bonus-option">CriticalDamage</div>
-                        <div class="bonus-option">BoostExistingEnemiesWithLoot</div>
-                    </div>
-                    <strong>↓</strong>
-                    <div class="bonus-options">
-                        <div class="bonus-option bonus-selected">MoreBonusVariantsNextTime</div>
-                        <div class="bonus-option">FirstEnemiesInWaveExplode</div>
-                        <div class="bonus-option">GV_AbilitiesEnergy</div>
-                    </div>
-                </div>
-                
-                <div class="bonus-stage">
-                    <strong>Stage 4 (200 pts)</strong>
-                    <div class="bonus-options">
-                        <div class="bonus-option">MinersSpawnEnemies</div>
-                        <div class="bonus-option bonus-selected">TriggerRandomAbility</div>
-                        <div class="bonus-option">BaseExplodesOnEnemyPass</div>
-                        <div class="bonus-option">AddAllAbilityCharges</div>
-                    </div>
-                </div>
-                
-                <div class="bonus-stage">
-                    <strong>Stage 5 (250 pts)</strong>
-                    <div class="bonus-options">
-                        <div class="bonus-option">NukeOnBonusStage</div>
-                        <div class="bonus-option bonus-selected">LowHpEnemiesDealNoDamage</div>
-                        <div class="bonus-option">IncreaseSelectedBonusesPower</div>
-                        <div class="bonus-option">MultiplyMdps</div>
-                    </div>
-                </div>
-            </div>
-            
-            <p>Notice how the player's choices and re-rolls affect subsequent stages. At Stage 3, the player re-rolled and selected "MoreBonusVariantsNextTime", which is why Stage 4 has 4 bonus options instead of 3.</p>
-        </section>
-        
-        <section>
-            <h2>Key Factors in Probability Distribution</h2>
-            <ul>
-                <li><strong>Provider Configurations:</strong> Each bonus type has a provider that determines its base probability.</li>
-                <li><strong>Stage-Based Adjustments:</strong> Some bonuses may have different probabilities based on stage number.</li>
-                <li><strong>Re-roll Mechanism:</strong> Players can re-roll available bonuses at a cost, affecting the random sequence.</li>
-                <li><strong>PowerUpProbabilityMultiplier:</strong> Some bonuses have multipliers that adjust their relative probability.</li>
-                <li><strong>Preconditions:</strong> If a selected bonus has unsatisfied preconditions, it may be replaced with another valid bonus.</li>
-            </ul>
+            <h3>Fallback Mechanism</h3>
+            <p>If all available bonuses have unsatisfied preconditions, the system will add a fallback "Green Papers" bonus to ensure you always have at least one valid option.</p>
         </section>
     </div>
+    
+    <script>
+        // Progression visualization
+        const stageRequirements = [15, 30, 50, 75, 110, 150, 200, 260, 330, 410];
+        const progressionContainer = document.getElementById('progression-visual');
+        let currentPoints = 0;
+        let activeStage = 0;
+        
+        // Create stage progress bars
+        function createProgressBars() {
+            progressionContainer.innerHTML = '';
+            for (let i = 0; i < stageRequirements.length; i++) {
+                const stageDiv = document.createElement('div');
+                stageDiv.className = 'bonus-stage';
+                
+                const stageNumber = document.createElement('div');
+                stageNumber.className = 'stage-number';
+                stageNumber.textContent = i + 1;
+                
+                const progressBar = document.createElement('div');
+                progressBar.className = 'progress-bar';
+                
+                const progressFill = document.createElement('div');
+                progressFill.className = 'progress-fill';
+                progressFill.id = `progress-${i+1}`;
+                if (i < activeStage) {
+                    progressFill.style.width = '100%';
+                } else if (i === activeStage) {
+                    const percentage = (currentPoints / stageRequirements[i]) * 100;
+                    progressFill.style.width = `${percentage}%`;
+                } else {
+                    progressFill.style.width = '0%';
+                }
+                
+                const progressText = document.createElement('div');
+                progressText.className = 'progress-text';
+                progressText.textContent = i < activeStage ? 
+                    `${stageRequirements[i]}/${stageRequirements[i]} (Complete)` : 
+                    i === activeStage ? 
+                    `${currentPoints}/${stageRequirements[i]}` : 
+                    `0/${stageRequirements[i]}`;
+                
+                progressBar.appendChild(progressFill);
+                progressBar.appendChild(progressText);
+                
+                stageDiv.appendChild(stageNumber);
+                stageDiv.appendChild(progressBar);
+                
+                progressionContainer.appendChild(stageDiv);
+            }
+        }
+        
+        // Simulate enemy kills and progress
+        function simulateKills(count = 1) {
+            if (activeStage >= stageRequirements.length) return;
+            
+            currentPoints += count;
+            
+            // Check if we've completed the current stage
+            if (currentPoints >= stageRequirements[activeStage]) {
+                currentPoints = 0;
+                activeStage++;
+            }
+            
+            createProgressBars();
+        }
+        
+        // Add click listeners to progress bars to simulate kills
+        progressionContainer.addEventListener('click', function() {
+            simulateKills(5);
+        });
+        
+        document.getElementById('reset-progression').addEventListener('click', function() {
+            currentPoints = 0;
+            activeStage = 0;
+            createProgressBars();
+        });
+        
+        // Initialize
+        createProgressBars();
+        
+        // Add animation to simulate progress
+        setInterval(function() {
+            if (Math.random() > 0.7) { // 30% chance to simulate kills each interval
+                simulateKills(Math.floor(Math.random() * 3) + 1);
+            }
+        }, 2000);
+    </script>
 </body>
 </html>
